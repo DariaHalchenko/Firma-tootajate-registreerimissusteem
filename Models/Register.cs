@@ -11,6 +11,6 @@ namespace Firma_tootajate_registreerimissusteem.Models
         public string Email { get; set; }
         public string Parool { get; set; }
         [JsonIgnore]
-        public bool IsAdmin { get; set; } = false; // работник
+        public bool IsAdmin { get; set; } = false; // false - работник, true - администратор
     }
 }
