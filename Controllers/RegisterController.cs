@@ -52,7 +52,6 @@ namespace Firma_tootajate_registreerimissusteem.Controllers
             return Ok(new
             {
                 Message = "Kasutaja on edukalt registreeritud",
-                Id = uuskasutaja.Id,
                 Email = uuskasutaja.Email,
                 Nimi = uuskasutaja.Nimi
             });
