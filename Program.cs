@@ -1,4 +1,5 @@
 using Firma_tootajate_registreerimissusteem.Data;
+using Firma_tootajate_registreerimissusteem.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,5 +38,25 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    // ?????????, ???? ?? admin
+    if (!db.Registers.Any(u => u.Email == "admin@gmail.com"))
+    {
+        var admin = new Register
+        {
+            Nimi = "Admin",
+            Email = "admin@gmail.com",
+            Parool = BCrypt.Net.BCrypt.HashPassword("admin123"),
+            IsAdmin = true
+        };
+
+        db.Registers.Add(admin);
+        db.SaveChanges();
+    }
+}
 
 app.Run();
