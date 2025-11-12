@@ -1,0 +1,6 @@
+@Firma_tootajate_registreerimissusteem_HostAddress = http://localhost:5155
+
+GET {{Firma_tootajate_registreerimissusteem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
