@@ -7,6 +7,7 @@ namespace Firma_tootajate_registreerimissusteem.Data
     {
         public DbSet<Register> Registers { get; set; }
         public DbSet<Login> Logins { get; set; }
+        public DbSet<Worktime> Worktimes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

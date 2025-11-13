@@ -5,7 +5,7 @@
 namespace Firma_tootajate_registreerimissusteem.Migrations
 {
     /// <inheritdoc />
-    public partial class updateRegister : Migration
+    public partial class addedRegister : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

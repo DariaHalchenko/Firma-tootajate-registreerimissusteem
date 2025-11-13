@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Firma_tootajate_registreerimissusteem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251112091509_addedLogin")]
-    partial class addedLogin
+    [Migration("20251113142737_addedWorktime")]
+    partial class addedWorktime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,9 @@ namespace Firma_tootajate_registreerimissusteem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nimi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -68,6 +71,49 @@ namespace Firma_tootajate_registreerimissusteem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Registers");
+                });
+
+            modelBuilder.Entity("Firma_tootajate_registreerimissusteem.Models.Worktime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Nadalapaev")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegisterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ToopaevaAlgus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ToopaevaLopp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegisterId");
+
+                    b.ToTable("Worktimes");
+                });
+
+            modelBuilder.Entity("Firma_tootajate_registreerimissusteem.Models.Worktime", b =>
+                {
+                    b.HasOne("Firma_tootajate_registreerimissusteem.Models.Register", "Register")
+                        .WithMany("Worktime")
+                        .HasForeignKey("RegisterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Register");
+                });
+
+            modelBuilder.Entity("Firma_tootajate_registreerimissusteem.Models.Register", b =>
+                {
+                    b.Navigation("Worktime");
                 });
 #pragma warning restore 612, 618
         }

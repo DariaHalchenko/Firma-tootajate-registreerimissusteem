@@ -10,6 +10,7 @@ namespace Firma_tootajate_registreerimissusteem.Models
         public string Nimi { get; set; }
         public string Email { get; set; }
         public string Parool { get; set; }
+        public List<Worktime> Worktime { get; set; } = new();
         [JsonIgnore]
         public bool IsAdmin { get; set; } = false; // false - работник, true - администратор
     }

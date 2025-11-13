@@ -1,7 +1,7 @@
 ﻿using Firma_tootajate_registreerimissusteem.Data;
 using Firma_tootajate_registreerimissusteem.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Firma_tootajate_registreerimissusteem.Controllers
 {
@@ -16,30 +16,35 @@ namespace Firma_tootajate_registreerimissusteem.Controllers
             _context = context;
         }
 
-        // Авторизация пользователя
+        // Авторизация пользователя с возвратом рабочего времени
         [HttpPost("login")]
         public IActionResult Login([FromBody] Login login)
         {
-            // Ищем пользователя по email
-            var kasutaja = _context.Registers.FirstOrDefault(u => u.Email == login.Email);
-            if (kasutaja == null)
-            {
-                return Unauthorized("Vale e-posti aadress või parool.");
-            }
+            var kasutaja = _context.Registers
+                .Include(u => u.Worktime)
+                .FirstOrDefault(u => u.Email == login.Email);
 
-            // Проверяем пароль через BCrypt
+            if (kasutaja == null)
+                return Unauthorized("Vale e-posti aadress või parool.");
+
             bool isPasswordValid = BCrypt.Net.BCrypt.Verify(login.Parool, kasutaja.Parool);
             if (!isPasswordValid)
-            {
                 return Unauthorized("Vale e-posti aadress või parool.");
-            }
 
-            // Возвращаем успешный ответ
+            // Преобразуем DayOfWeek в строку
+            var worktimes = kasutaja.Worktime.Select(w => new
+            {
+                Nadalapaev = w.Nadalapaev.ToString(), 
+                w.ToopaevaAlgus,
+                w.ToopaevaLopp
+            }).ToList();
+
             return Ok(new
             {
                 Message = "Sisselogimine õnnestus",
                 Email = kasutaja.Email,
-                Nimi = kasutaja.Nimi
+                Nimi = kasutaja.Nimi,
+                Worktime = worktimes
             });
         }
     }
