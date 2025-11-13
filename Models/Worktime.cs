@@ -14,3 +14,4 @@ namespace Firma_tootajate_registreerimissusteem.Models
         public Register? Register { get; set; }
     }
 }
+//
